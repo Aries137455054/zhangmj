@@ -106,27 +106,24 @@
 <!--     </bean> -->
 
     <!-- 通知 -->
-<!--     <tx:advice id="txAdvice" transaction-manager="transactionManager"> -->
-<!--         <tx:attributes> -->
-<!--             传播行为 -->
-<!--             <tx:method name="save*" propagation="REQUIRED"/> -->
-<!--             <tx:method name="insert*" propagation="REQUIRED"/> -->
-<!--             <tx:method name="delete*" propagation="REQUIRED"/> -->
-<!--             <tx:method name="update*" propagation="REQUIRED"/> -->
-<!--             <tx:method name="find*" propagation="SUPPORTS" read-only="true"/> -->
-<!--             <tx:method name="get*" propagation="SUPPORTS" read-only="true"/> -->
-<!--         </tx:attributes> -->
-<!--     </tx:advice> -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
 
     <!-- 切面 -->
-    <!--
-        proxy-target-class="true" 表示直接使用 类 实现动态代理
-     -->
-<!--     <aop:config proxy-target-class="true"> -->
-<!--         <aop:advisor advice-ref="txAdvice" pointcut="execution(* service.impl.*.*(..))"/> -->
-<!--     </aop:config> -->
+    <!-- proxy-target-class="true" 表示直接使用 类 实现动态代理 -->
+    <aop:config proxy-target-class="true">
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* service.impl.*.*(..))"/>
+    </aop:config>
 
-<!--     <tx:annotation-driven transaction-manager="transactionManager"/> -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
 </beans>
 
