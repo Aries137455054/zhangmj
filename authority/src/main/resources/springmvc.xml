@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 						http://www.springframework.org/schema/mvc
 						http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
 						http://www.springframework.org/schema/context  
-       					http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+       					http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       					http://www.springframework.org/schema/websocket
+            			http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd">
 
 	<context:component-scan base-package="wymb.web.controller">
 		<context:include-filter type="annotation"
@@ -31,20 +34,21 @@
 			<mvc:exclude-mapping path="/logout" />
 			<bean class="wymb.web.interceptor.LoginInterceptor" />
 		</mvc:interceptor>
-		
+
 		<!-- 权限拦截 -->
-<!-- 		<mvc:interceptor> -->
-<!-- 			<mvc:mapping path="/**" /> -->
-<!-- 			<mvc:exclude-mapping path="/resources/**"/> -->
-<!-- 			<mvc:exclude-mapping path="/login"/> -->
-<!-- 			<mvc:exclude-mapping path="/logout"/> -->
-<!-- 			<bean class="wymb.web.interceptor.AuthorizateInterceptor" /> -->
-<!-- 		</mvc:interceptor> -->
+		<!-- <mvc:interceptor> -->
+		<!-- <mvc:mapping path="/**" /> -->
+		<!-- <mvc:exclude-mapping path="/resources/**"/> -->
+		<!-- <mvc:exclude-mapping path="/login"/> -->
+		<!-- <mvc:exclude-mapping path="/logout"/> -->
+		<!-- <bean class="wymb.web.interceptor.AuthorizateInterceptor" /> -->
+		<!-- </mvc:interceptor> -->
 	</mvc:interceptors>
 
 	<mvc:annotation-driven>
 		<mvc:message-converters>
-			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 				<property name="objectMapper">
 					<bean class="com.fasterxml.jackson.databind.ObjectMapper">
 						<property name="dateFormat">
@@ -57,9 +61,25 @@
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
-	
-	
-	
+
+	<!-- WebSocket -->
+	<bean id="myHandler" class="wymb.web.websocket.MyWebSocketHandler" />
+<!-- 	<bean id="myInteceptor" class="wymb.web.websocket.HandShakeInteceptor" /> -->
+	<websocket:handlers>
+		<websocket:mapping handler="myHandler" path="/websocket" />
+<!-- 		<websocket:handshake-interceptors> -->
+<!-- 			<ref bean="myInteceptor" /> -->
+<!-- 		</websocket:handshake-interceptors> -->
+	</websocket:handlers>
+
+	<!-- 注册sockJS -->
+<!-- 	<websocket:handlers> -->
+<!-- 		<websocket:mapping handler="myHandler" path="/sockjs/websocket" /> -->
+<!-- 		<websocket:handshake-interceptors> -->
+<!-- 			<ref bean="myInteceptor" /> -->
+<!-- 		</websocket:handshake-interceptors> -->
+<!-- 		<websocket:sockjs/> -->
+<!-- 	</websocket:handlers> -->
 </beans>
 
 

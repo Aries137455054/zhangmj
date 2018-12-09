@@ -1,12 +1,16 @@
 package wymb.service;
 
-import wymb.domain.User;
+import java.util.List;
 
 import com.github.pagehelper.PageInfo;
+
+import wymb.domain.User;
 
 public interface UserService extends BaseService<User> {
 
 	User findUserByUserName(String userName);
+	
+	List<User> findUserByUserName1(String userName);
 
 	void deleteBatchByIds(String[] idsStr);
 

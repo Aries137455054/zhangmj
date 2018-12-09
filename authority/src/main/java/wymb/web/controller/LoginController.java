@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.socket.TextMessage;
 
 import wymb.domain.Permission;
 import wymb.domain.User;
 import wymb.service.PermissionService;
 import wymb.service.UserService;
 import wymb.vo.Result;
+import wymb.web.websocket.MyWebSocketHandler;
 
 @Controller
 public class LoginController {
@@ -37,6 +39,11 @@ public class LoginController {
 			return new Result(403, "用户密码不正确");
 		}
 		session.setAttribute("loginUser", user);
+		
+		MyWebSocketHandler handler = new MyWebSocketHandler();
+		TextMessage textMessage = new TextMessage(user.getUserName()+"登录了系统",true);
+		handler.sendMsgToAllUsers(textMessage);
+		
 		return Result.succeed("manageUI");
 	}
 	

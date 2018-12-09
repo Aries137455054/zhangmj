@@ -33,7 +33,7 @@
 		<label for="form-field-select-2">选择角色</label>
 		<select class="form-control" id="roleIds" multiple="multiple"></select>
 	</div>
-</div>	
+</div>
 <%@ include file="../common.jsp" %>
 <script src="/authority/resources/js/user/list.js"></script>
 </body>

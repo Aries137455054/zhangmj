@@ -1,6 +1,7 @@
 package wymb.web.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,6 +34,15 @@ public class UserController {
 	@RequestMapping("list")
 	@ResponseBody
 	public Result list(int offset, int limit, String search) {
+		
+//		Long startTime = System.currentTimeMillis();
+//		List<User> list = userService.findUserByUserName1("张明杰1");
+//		
+//		System.out.println(list.size());
+//		System.out.println("****************耗时："+(System.currentTimeMillis()-startTime));
+//		
+//		return Result.succeed(new PageInfo<User>());
+		
 		PageInfo<User> pageInfo = userService.getListByPage(offset, limit, search);
 		return Result.succeed(pageInfo);
 	}
@@ -83,5 +93,10 @@ public class UserController {
 		this.userService.saveUserRole(userId, roleIds);
 		return Result.succeed();
 	}
-
+	
+	@RequestMapping("testInternal")
+	@ResponseBody
+	public String testInternal(){
+		return "<h1 style='text-align:center;'> World!</h1>";
+	}
 }

@@ -24,7 +24,7 @@ public class User implements Serializable {
 	private Integer status;
 	private Date createTime;
 	private Date updateTime;
-
+	
 	@Transient
 	private List<Permission> menuList;
 	@Transient

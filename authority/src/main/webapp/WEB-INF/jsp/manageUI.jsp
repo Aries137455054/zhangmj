@@ -84,7 +84,6 @@
 			<a class="menu-toggler" id="menu-toggler" href="#"> <span
 				class="menu-text"></span>
 			</a>
-
 			<div class="sidebar" id="sidebar">
 				<script type="text/javascript">
 					try {
@@ -92,7 +91,6 @@
 					} catch (e) {
 					}
 				</script>
-
 				<div class="sidebar-shortcuts" id="sidebar-shortcuts">
 					<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
 						<button class="btn btn-success">
@@ -121,22 +119,21 @@
 				<!-- #sidebar-shortcuts -->
 
 				<ul class="nav nav-list" id="menu-list">
-					<c:forEach var="category" items="${sessionScope.loginUser.menuList}" varStatus="st">
-						<li><a href="#" class="dropdown-toggle"> 
-								<i class="icon-desktop"></i> 
-								<span class="menu-text" id="category_${st.index}"> ${category.name} </span>
-								<b class="arrow icon-angle-down"></b>
-							</a>
+					<c:forEach var="category"
+						items="${sessionScope.loginUser.menuList}" varStatus="st">
+						<li><a href="#" class="dropdown-toggle"> <i
+								class="icon-desktop"></i> <span class="menu-text"
+								id="category_${st.index}"> ${category.name} </span> <b
+								class="arrow icon-angle-down"></b>
+						</a>
 							<ul class="submenu">
 								<c:forEach var="menu" items="${category.children }">
-									<li>
-										<a href="javascript:void(0)" data-url="${menu.url}" data-category="category_${st.index}" class="menu-click"> 
-										<i class="icon-double-angle-right"></i> ${menu.name}
-										</a>
-									</li>
+									<li><a href="javascript:void(0)" data-url="${menu.url}"
+										data-category="category_${st.index}" class="menu-click"> <i
+											class="icon-double-angle-right"></i> ${menu.name}
+									</a></li>
 								</c:forEach>
-							</ul>
-						</li>
+							</ul></li>
 					</c:forEach>
 				</ul>
 				<!-- /.nav-list -->
@@ -163,11 +160,8 @@
 						} catch (e) {
 						}
 					</script>
-
 					<ul class="breadcrumb">
-						<li>
-							<i class="icon-home home-icon"></i> 
-							<a href="#">Home</a>
+						<li><i class="icon-home home-icon"></i> <a href="#">Home</a>
 						</li>
 						<li id="category"></li>
 						<li class="active" id="menu"></li>
@@ -176,6 +170,12 @@
 				</div>
 				<!-- /.page-content -->
 				<div style="overflow: auto;">
+					<div
+						style="margin: 20px auto; border: 1px solid blue; width: 500px; height: 300px;">
+						<div id="msg" style="width: 100%; height: 70%; border: 1px solid yellow; overflow: auto;"></div>
+						<textarea id="tx" style="width: 100%; height: 10%;"></textarea>
+						<button id="TXBTN" class="btn btn-sm btn-info pull-right">发送数据</button>
+					</div>
 					<iframe id="contentPanel" width="100%" height="800px"
 						frameborder="no" border="0" marginwidth="0" marginheight="0"
 						scrolling="yes" allowtransparency="yes"></iframe>
@@ -191,5 +191,82 @@
 	<script src="/authority/resources/js/ace.min.js"></script>
 	<script src="/authority/resources/js/ace-extra.min.js"></script>
 	<script src="/authority/resources/js/manageUI/config.js"></script>
+	<script src="/authority/resources/js/sockjs.min.js"></script>
+
+	<script>
+		//ajax轮询
+		// 		var setting = {
+		// 				url:"user/testInternal",
+		// 				success:function(res){
+		// 					$('#internal').html(res);
+		// 					$.ajax(setting);
+		// 				},
+		// 				error:function(){
+		// 					$.ajax(setting);
+		// 				}
+		// 		};
+
+		//  		$.ajax(setting);
+
+		// 		function WebSocketTest() {
+		// 			if ('WebSocket' in window) {
+		// 				alert('您的浏览器支持 WebSocket');
+		// 				var ws = new WebSocket("ws://127..0.1:9998");
+		// 				ws.onopen = function() {
+		// 					ws.send("发送数据");
+		// 					alert("发送数据中");
+		// 				}
+		// 				ws.onmessage = function(evt) {
+		// 					var received = evt.data;
+		// 					alert("接收数据中");
+		// 				}
+		// 				ws.onclose = function() {
+		// 					alert("连接已关闭!!!");
+		// 				}
+		// 			} else {
+		// 				alert('您的浏览器不支持 WebSocket');
+		// 			}
+		// 		}
+
+		var websocket;
+		if ("WebSocket" in window) {
+			websocket = new WebSocket("ws://localhost:8080/authority/websocket");
+		} else if ('MozWebSocket' in window) {
+			websocket = new MozWebSocket("ws://localhost:8080/authority/websocket");
+		} else {
+			websocket = new SockJS("http://localhost:8080/authority/sockjs/websocket");
+		}
+		
+		websocket.onopen = function(event){
+			console.log('websocket open........');
+		}
+		
+		websocket.onmessage = function(event){
+			$('#msg').append("<p>"+event.data+"</p>");
+			console.log('websocket onmessage........');
+		}
+		
+		websocket.onerror = function(event){
+			console.log('websocket onerror........');
+		}
+		
+		websocket.onclose = function(event){
+			console.log('websocket onclose........');
+		}
+		
+		$("#TXBTN").click(function() {
+			var text = $('#tx').val().trim();
+			$('#tx').val("");
+			if(!text){
+				alert("content can not empty!");
+				return false;
+			}
+			var msg = {
+					msgContent:text,
+					postId:1
+			};
+			websocket.send(JSON.stringify(msg));
+		})
+	</script>
 </body>
 </html>

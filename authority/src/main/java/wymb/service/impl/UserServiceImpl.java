@@ -10,14 +10,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 import wymb.domain.User;
 import wymb.mapper.UserMapper;
 import wymb.service.UserService;
-
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User> implements
@@ -33,6 +33,10 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements
 
 	public User findUserByUserName(String userName) {
 		return this.userMapper.getUserByUserName(userName);
+	}
+	
+	public List<User> findUserByUserName1(String userName) {
+		return this.userMapper.getUserByUserName1(userName);
 	}
 
 	public void deleteBatchByIds(String[] idsStr) {

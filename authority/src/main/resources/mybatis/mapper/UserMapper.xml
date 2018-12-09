@@ -11,6 +11,15 @@
 			user_name = #{userName}
 	</select>
 	
+	<select id="getUserByUserName1" parameterType="String" resultType="User" fetchSize="1000000">
+		SELECT 
+			user_id as id,user_name,password,email,phone,salt 
+		FROM 
+			t_user 
+		WHERE 
+			user_name = #{userName}
+	</select>
+	
 	<delete id="deleteBatchByIds">
 		DELETE FROM 
 			t_user 

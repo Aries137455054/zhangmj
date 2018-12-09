@@ -11,6 +11,8 @@ import wymb.domain.User;
 public interface UserMapper extends Mapper<User> {
 
 	User getUserByUserName(String userName);
+	
+	List<User> getUserByUserName1(String userName);
 
 	void deleteBatchByIds(@Param("ids") String[] idsStr);
 
