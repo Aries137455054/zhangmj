@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+					http://www.springframework.org/schema/beans/spring-beans-4.0.xsd	
+					http://www.springframework.org/schema/context  
+                    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                    http://www.springframework.org/schema/mvc
+					http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                    http://www.springframework.org/schema/tx
+                    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+                    http://www.springframework.org/schema/aop
+                    http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<!-- 启用注解驱动 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	<!-- 静态资源访问 -->
+	<mvc:default-servlet-handler/>
+	
+	<!-- 扫描包 -->
+	<context:component-scan base-package="com.wymb.chapter5.springmvc1" />
+
+	<!-- 视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	<!-- 文件上传 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8"></property>
+		 <!-- 设定文件上传的最大值为5MB，10*1024*1024 -->
+		<property name="maxUploadSize" value="1048576000"></property>
+		<!-- 设定文件上传时写入内存的最大值，如果小于这个参数不会生成临时文件，默认为10240 -->
+		<property name="maxInMemorySize" value="40960"></property>
+		<!-- 上传文件的临时路径 -->
+		<property name="uploadTempDir" value="fileUpload/temp"></property>
+		<!-- 延迟文件解析 -->
+		<property name="resolveLazily" value="true"/>
+	</bean>
+</beans>
+
+
+
+
+
+

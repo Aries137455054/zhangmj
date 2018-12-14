@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+					http://www.springframework.org/schema/beans/spring-beans-4.0.xsd	
+					http://www.springframework.org/schema/context  
+                    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                    http://www.springframework.org/schema/tx
+                    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+                    http://www.springframework.org/schema/aop
+                    http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+	<bean id="audience" class="com.wymb.chapter4.xml1.Audience" />
+	<bean id="performanceImpl" class="com.wymb.chapter4.xml1.PerformanceImpl">
+		<property name="title" value="标题"></property>
+		<property name="list">
+			<list>
+				<value>AAA</value>
+				<value>BBB</value>
+				<value>CCC</value>
+				<value>DDD</value>
+				<value>EEE</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="student" class="com.wymb.chapter4.xml1.StudentImpl">
+		<property name="studentNo" value="1001"/>
+		<property name="studentName" value="张明杰"/>
+	</bean>
+	<bean id="studentAdditionalDetailImpl" class="com.wymb.chapter4.xml1.StudentAdditionalDetailImpl">
+		<property name="city" value="汉川"/>
+		<property name="country" value="中国"/>
+	</bean>
+	
+	<aop:config>
+		<!-- 定义切面 -->
+<!-- 		<aop:aspect ref="audience"> -->
+<!-- 			<aop:before method="method1" pointcut="execution(** com.wymb.chapter4.xml1.Performance.giveMoney(..))" /> -->
+<!-- 			<aop:after method="method2" pointcut="execution(** com.wymb.chapter4.xml1.Performance.giveMoney(..))"/> -->
+<!-- 			<aop:after-returning method="method3" pointcut="execution(** com.wymb.chapter4.xml1.Performance.giveMoney(..))"/> -->
+<!-- 		</aop:aspect> -->
+
+<!-- 		<aop:aspect ref="audience"> -->
+<!-- 			<aop:pointcut expression="execution(** com.wymb.chapter4.xml1.Performance.giveMoney(..))" id="aaa"/> -->
+<!-- 			<aop:before  pointcut-ref="aaa" method="method1"/> -->
+<!-- 			<aop:after method="method2" pointcut-ref="aaa"/> -->
+<!-- 			<aop:before method="method3" pointcut-ref="aaa"/> -->
+<!-- 		</aop:aspect> -->
+
+			<!-- 环绕通知 -->
+			<aop:aspect ref="audience">
+				<aop:pointcut expression="execution(** com.wymb.chapter4.xml1.Performance.giveMoney(..))" id="aaaaaa"/>
+				<aop:around method="around" pointcut-ref="aaaaaa"/>
+			</aop:aspect>
+			
+			<!-- 引入新方法 -->
+			<aop:aspect>
+				<aop:declare-parents types-matching="com.wymb.chapter4.xml1.StudentAdditionalDetail+" 
+					implement-interface="com.wymb.chapter4.xml1.Student"
+					delegate-ref="student"/>
+			</aop:aspect>
+			
+	</aop:config>
+	
+	
+	
+	
+	
+</beans>
+
+
+
+
+
+
