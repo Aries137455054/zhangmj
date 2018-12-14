@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="3.0"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+	<display-name>Archetype Created Web Application</display-name>
+
+	<servlet>
+		<servlet-name>HelloHessian</servlet-name>
+		<servlet-class>com.caucho.hessian.server.HessianServlet</servlet-class>
+
+		<!-- 远程服务实现类 -->
+		<init-param>
+			<param-name>home-class</param-name>
+			<param-value>secondriver.hessian.server.bo.HelloHessianImpl</param-value>
+		</init-param>
+
+		<!-- 远程服务接口 -->
+		<init-param>
+			<param-name>home-api</param-name>
+			<param-value>org.hessian.api.HelloHessian</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<!-- 业务处理类 -->
+	<servlet>
+		<servlet-name>PostDataServlet</servlet-name>
+		<servlet-class>secondriver.hessian.server.servlet.PostDataServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>HelloHessian</servlet-name>
+		<url-pattern>/HelloHessian</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PostDataServlet</servlet-name>
+		<url-pattern>/PostDataServlet</url-pattern>
+	</servlet-mapping>
+</web-app>
